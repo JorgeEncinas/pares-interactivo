@@ -92,7 +92,7 @@ def mostrar_mano():
 def mostrar_marcador():
     return j.marcador
 
-def main( direccion, puerto, mano ):
+def main( direccion, puerto, manox ):
     # Set up logging
     logging.basicConfig(level=logging.DEBUG)
 
@@ -101,7 +101,7 @@ def main( direccion, puerto, mano ):
     logRequests=True,
     )
     j = Juego()
-    j.numero_cartas = max_cap( mano, "" )
+    j.numero_cartas = max_cap( manox, "" )
     server.register_function(mano)
     server.register_function(mostrar_jugadores)
     server.register_function(mostrar_mano)
