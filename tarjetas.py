@@ -95,7 +95,8 @@ class Baraja:
         mano = []   
         for i in range( 1, numero+1 ):
             mano.append( self.lista_cartas.pop() )
-        return sorted(mano)
+        mano.sort(key = lambda carta: carta.valor)
+        return mano
 
 class Jugador:
     nombre = None #str

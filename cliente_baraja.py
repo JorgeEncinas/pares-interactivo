@@ -15,6 +15,8 @@
 #Debe mostrar un menú
 
 import pares
+import xmlrpc.client
+import argparse
 #Métodos útiles de pares.py:
 #   comparar_manos( jugadores, dict_cartas ): Regresa ganador, dict_ganador
 #   motivo_victoria( dt ): regresa el motivo por el que ganó
@@ -28,7 +30,7 @@ def menu():
     print("6. Cambiar Nombre")          #El cliente se desconecta del servidor y sale.
     print("0. Salir")                   #A ver si ahora sí me sale ajuuuuuuuuua
     print("")
-    return safe_int("Escriba el número de la opción que desee y presione Enter", 6)
+    return safe_int("Escriba el número de la opción que desee y presione Enter \n", 6)
 
 
 def safe_int( mensaje, opcion_max ):
@@ -49,16 +51,16 @@ def mostrar_mano( jugador, mano ):
     for carta in mano:
         print(carta)
 
-def mostrar_jugadores():
+def mostrar_jugadores( proxy ):
     players = proxy.mostrar_jugadores()
     if len(players) > 0:
-        print("Jugadores: {}".format(len(jugadores)))
+        print("Jugadores: {}".format(len(players)))
         for i, player in enumerate(players):
             print("Jugador {}: {}".format(i, player))
     else:
         print("No hay jugadores aún.")
 
-def mostrar_manos( jugadores ):
+def mostrar_manos( jugadores,proxy):
     ganador, dict_ganador = pares.comparar_manos( jugadores )
     if ganador is None:
         print("Empate")
@@ -72,7 +74,7 @@ def reset():
 
 def main( jugador, direccion, puerto ):
     print("Iniciamos! \n")
-    proxy = xmlrpc.client.ServerProxy('http://localhost:9000')
+    proxy = xmlrpc.client.ServerProxy('http://localhost:9000', allow_none=True)
     try:
         opcion = 99
         while opcion != 0:
@@ -80,12 +82,12 @@ def main( jugador, direccion, puerto ):
             if opcion == 0: #Salir
                 break
             if opcion == 1: #Pedir Mano
-                mi_mano = proxy.mano( jugador )
-                mostrar_mano( jugador, mi_mano )
+                mi_mano = proxy.hmano( jugador )
+                mostrar_mano(jugador, mi_mano)
             if opcion == 2: #Mostrar Jugadores
-                mostrar_jugadores()
+                mostrar_jugadores( proxy )
             if opcion == 3: #Mostrar manos de todos
-                mostrar_manos( proxy.mostrar_manos() )
+                mostrar_manos( proxy.mostrar_manos(),proxy)
             if opcion == 4: #Volver a jugar
                 reset()
             if opcion == 5: #Mostrar Marcador
