@@ -18,6 +18,7 @@ from xmlrpc.server import SimpleXMLRPCServer
 import logging
 import random
 import pares
+import argparse
 
 class Juego: #adaptar esto para que sea la baraja.
     baraja = None
@@ -34,26 +35,19 @@ class Juego: #adaptar esto para que sea la baraja.
         self.dict_jugadores = dict()
 
     def mano(self, jugador, numero):
-        if numero_cartas > 0:
-            print("Alguien ha definido ya un número de cartas: {}".format(numero_cartas))
+        if self.numero_cartas > 0:
+            print("Alguien ha definido ya un número de cartas: {}".format(self.numero_cartas))
         else: #numero_cartas == 0:
-            self.numero_cartas = max_cap( numero, len(baraja.dict_jugadores))
-        mano_jugador = baraja.genera_mano( numero_cartas )
-        guarda_jugador( jugador, mano_jugador )
+            self.numero_cartas = max_cap( numero, len(self.baraja.dict_jugadores))
+        mano_jugador = self.baraja.genera_mano( self.numero_cartas )
+        self.guarda_jugador( jugador, mano_jugador )
         return mano_jugador
     
     def guarda_jugador( self, jugador, mano_jugador ):
         self.dict_jugadores[jugador] = mano_jugador
             
     def max_cap( self, num_cartas, jugadores ):
-        if len(jugadores) > 0:
-            if num_cartas > math.floor(52/(len(jugadores))):
-                print("Se ha seleccionado un número de cartas para las cuales \n \
-                no se puede repartir la mano equitativamente. \n \
-                Se reducirá la cantidad de cartas al número máximo posible.")
-                num_cartas = math.floor(52/(len(jugadores)))
-        else:
-            if num_cartas > 26:
+        if num_cartas > 26:
                 print("Con ese número de cartas no es posible jugar siquiera de dos jugadores. \n \
                 Se reducirá el número a 26.")
                 num_cartas = 26
@@ -61,15 +55,22 @@ class Juego: #adaptar esto para que sea la baraja.
             print("Con ese número de cartas no es posible jugar. \n \
             Se le asignarán 5 cartas a su mano")
             num_cartas = 5
-    return num_cartas 
+        self.numero_cartas = num_cartas
+        return num_cartas 
 
-    def get_jugadores():
-        return [key for key in dict_jugadores.keys()] # Maybe .keys() not necessary
+    def get_jugadores( self ):
+        return [key for key in self.dict_jugadores.keys()] # Maybe .keys() not necessary
 
-#El servidor asigna una mano aleatoria al jugador, quitándolas de la baraja.
-#Devuelve la mano.
-#Se imprime el nombre del cliente, rayitas, y luego la mano ordenada de menor a mayor
-def mano( jugador ):
+# Set up logging
+logging.basicConfig(level=logging.DEBUG)
+
+server = SimpleXMLRPCServer(
+("localhost", 9000),
+logRequests=True,
+)
+j = Juego()
+
+def hmano( jugador ):
     return j.mano( jugador, j.numero_cartas )
 
 def guardar_marcador( ganador ):
@@ -93,16 +94,10 @@ def mostrar_marcador():
     return j.marcador
 
 def main( direccion, puerto, manox ):
-    # Set up logging
-    logging.basicConfig(level=logging.DEBUG)
 
-    server = SimpleXMLRPCServer(
-    (direccion, puerto),
-    logRequests=True,
-    )
-    j = Juego()
-    j.numero_cartas = max_cap( manox, "" )
-    server.register_function(mano)
+    j.numero_cartas = j.max_cap( manox, "" )
+
+    server.register_function(hmano)
     server.register_function(mostrar_jugadores)
     server.register_function(mostrar_mano)
     server.register_function(mostrar_manos)
