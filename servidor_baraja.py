@@ -75,9 +75,9 @@ def hmano( jugador ):
 
 def guardar_marcador( ganador ):
     if ganador in j.marcador:
-        marcador[ganador] = 1
+        marcador[ganador] = 1  #quiza estoy mal pero creo que aqui es al revés... marcador[ganador] += 1
     else:
-        marcador[ganador] += 1
+        marcador[ganador] += 1 #y aqui... marcador[ganador] = 1
 
 def mostrar_jugadores():
     return j.get_jugadores()
