@@ -74,7 +74,7 @@ def reset():
 
 def main( jugador, direccion, puerto ):
     print("Iniciamos! \n")
-    proxy = xmlrpc.client.ServerProxy('http://localhost:9000')
+    proxy = xmlrpc.client.ServerProxy('http://localhost:9000', allow_none=True)
     try:
         opcion = 99
         while opcion != 0:

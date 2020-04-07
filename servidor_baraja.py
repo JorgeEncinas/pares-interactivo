@@ -66,7 +66,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 server = SimpleXMLRPCServer(
 ("localhost", 9000),
-logRequests=True,
+logRequests=True, allow_none=True,
 )
 j = Juego()
 
