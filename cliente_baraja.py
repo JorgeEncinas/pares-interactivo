@@ -44,13 +44,6 @@ def safe_int( mensaje, opcion_max ):
                 print("Eso no es un número")
         return respuesta
 
-def mostrar_mano( jugador, mano ):
-    print(jugador)
-    print("-------------")
-    #mano.sort(key = lambda carta: carta.valor)
-    for carta in mano:
-        print(carta)
-
 def mostrar_jugadores( proxy ):
     players = proxy.mostrar_jugadores()
     if len(players) > 0:
@@ -60,7 +53,8 @@ def mostrar_jugadores( proxy ):
     else:
         print("No hay jugadores aún.")
 
-def mostrar_manos( jugadores,proxy):
+def mostrar_manos( proxy):
+    jugadores=proxy.mostrar_manos()
     ganador, dict_ganador = pares.comparar_manos( jugadores )
     if ganador is None:
         print("Empate")
@@ -73,6 +67,7 @@ def reset():
     print("PICHIUUUUUUUUUUUUUUUUU PWAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
 
 def main( jugador, direccion, puerto ):
+    #jugador="nene"
     print("Iniciamos! \n")
     proxy = xmlrpc.client.ServerProxy('http://localhost:9000', allow_none=True)
     try:
@@ -83,16 +78,21 @@ def main( jugador, direccion, puerto ):
                 break
             if opcion == 1: #Pedir Mano
                 mi_mano = proxy.hmano( jugador )
-                mostrar_mano(jugador, mi_mano)
+                pares.mostrar_mano(jugador, mi_mano)
             if opcion == 2: #Mostrar Jugadores
                 mostrar_jugadores( proxy )
             if opcion == 3: #Mostrar manos de todos
-                mostrar_manos( proxy.mostrar_manos(),proxy)
+                mostrar_manos(proxy)
             if opcion == 4: #Volver a jugar
+                #proxy.reset_marcador()
                 reset()
             if opcion == 5: #Mostrar Marcador
-                marcador = proxy.mostrar_marcador()
-                print(marcador)
+                marcador=proxy.mostrar_marcador()
+                items=marcador.items()
+                print("HIGH-SCORE")
+                print("------------------")
+                for jugador in items:
+                    print(jugador[0],": ",jugador[1],"pts")
             if opcion == 6: #Cambiar Nombre #SiSePuedeMéxico
                 print("No está listo bro")
         print("Saliendo")

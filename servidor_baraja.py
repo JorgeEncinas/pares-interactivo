@@ -30,6 +30,7 @@ class Juego: #adaptar esto para que sea la baraja.
 
     def __init__(self):
         self.baraja = tarjetas.Baraja()
+
         self.numero_cartas = 0
         self.marcador = dict()
         self.dict_jugadores = dict()
@@ -75,9 +76,9 @@ def hmano( jugador ):
 
 def guardar_marcador( ganador ):
     if ganador in j.marcador:
-        marcador[ganador] = 1
+        j.marcador[ganador] += 1
     else:
-        marcador[ganador] += 1
+        j.marcador[ganador] = 1
 
 def mostrar_jugadores():
     return j.get_jugadores()
@@ -93,6 +94,9 @@ def mostrar_mano():
 def mostrar_marcador():
     return j.marcador
 
+#def reset_marcador():
+#    j.marcador.clear()
+
 def main( direccion, puerto, manox ):
 
     j.numero_cartas = j.max_cap( manox, "" )
@@ -102,6 +106,9 @@ def main( direccion, puerto, manox ):
     server.register_function(mostrar_mano)
     server.register_function(mostrar_manos)
     server.register_function(mostrar_marcador)
+    server.register_function(guardar_marcador)
+    #server.register_function(reset_marcador)
+
     # Start the server
     try:
         print('Usa Control-C para salir')
