@@ -93,7 +93,6 @@ class Baraja:
     def genera_mano( self, numero ):
         # Genera una lista de cartas dependiendo del numero indicado
         mano = [] 
-        x = 1
         for i in range( 1, numero+1 ):
             if len(self.lista_cartas) > 0:
                 mano.append( self.lista_cartas.pop() )

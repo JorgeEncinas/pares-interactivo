@@ -41,7 +41,8 @@ class Juego: #adaptar esto para que sea la baraja.
         else: #numero_cartas == 0:
             self.numero_cartas = self.max_cap( numero, len(self.baraja.dict_jugadores))
         mano_jugador = self.baraja.genera_mano( self.numero_cartas )
-        self.guarda_jugador( jugador, mano_jugador )
+        print(jugador)
+        self.guarda_jugador( str(jugador), mano_jugador )
         return mano_jugador
     
     def guarda_jugador( self, jugador, mano_jugador ):
@@ -92,15 +93,14 @@ def mostrar_manos():
     #debe regresar un diccionario con los jugadores y sus manos.
     return j.dict_jugadores
 
-def mostrar_mano():
-    #ni idea xd supongo que mostrar la mano de un jugador pero sabe pq aquí xd
-    return 1
-
 def mostrar_marcador():
     return j.marcador
 
 def sreset():
     j.recoge_manos()
+
+def guardar_nuevo( jugador ):
+    j.guarda_jugador( str(jugador), [] )
 
 def main( direccion, puerto, manox ):
     # Set up logging
@@ -116,12 +116,11 @@ def main( direccion, puerto, manox ):
 
     server.register_function(hmano)
     server.register_function(mostrar_jugadores)
-    server.register_function(mostrar_mano)
     server.register_function(mostrar_manos)
     server.register_function(mostrar_marcador)
     server.register_function(guardar_marcador)
     server.register_function(sreset)
-    #server.register_function(reset_marcador)
+    server.register_function(guardar_nuevo)
 
     # Start the server
     try:

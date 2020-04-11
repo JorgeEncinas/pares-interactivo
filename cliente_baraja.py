@@ -15,6 +15,7 @@
 #Debe mostrar un menú
 
 import pares
+import tarjetas
 import xmlrpc.client
 import argparse
 #Métodos útiles de pares.py:
@@ -73,6 +74,8 @@ def reset( proxy ):
 def main( jugador, direccion, puerto ):
     print("Iniciamos! \n")
     proxy = xmlrpc.client.ServerProxy('http://localhost:9000', allow_none=True)
+    proxy.guardar_nuevo( jugador )
+    ya_pidio = False
     try:
         opcion = 99
         while opcion != 0:
@@ -83,15 +86,19 @@ def main( jugador, direccion, puerto ):
                 print("")
                 mi_mano = proxy.hmano( jugador )
                 pares.mostrar_mano(jugador, mi_mano)
+                ya_pidio = True
             if opcion == 2: #Mostrar Jugadores
                 mostrar_jugadores( proxy )
             if opcion == 3: #Mostrar manos de todos
-                mostrar_manos(proxy)
+                if ya_pidio == True:
+                    mostrar_manos(proxy)
+                    ya_pidio = False
+                else:
+                    print(" \n No has pedido mano. \n ")
             if opcion == 4: #Volver a jugar
                 reset( proxy )
                 print("Se han revuelto las cartas.")
             if opcion == 5: #Mostrar Marcador
-                print("")
                 marcador=proxy.mostrar_marcador()
                 items=marcador.items()
                 print("HIGH-SCORE")
