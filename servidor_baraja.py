@@ -30,6 +30,7 @@ class Juego: #adaptar esto para que sea la baraja.
 
     def __init__(self):
         self.baraja = tarjetas.Baraja()
+
         self.numero_cartas = 0
         self.marcador = dict()
         self.dict_jugadores = dict()
@@ -38,7 +39,7 @@ class Juego: #adaptar esto para que sea la baraja.
         if self.numero_cartas > 0:
             print("Alguien ha definido ya un número de cartas: {}".format(self.numero_cartas))
         else: #numero_cartas == 0:
-            self.numero_cartas = max_cap( numero, len(self.baraja.dict_jugadores))
+            self.numero_cartas = self.max_cap( numero, len(self.baraja.dict_jugadores))
         mano_jugador = self.baraja.genera_mano( self.numero_cartas )
         self.guarda_jugador( jugador, mano_jugador )
         return mano_jugador
@@ -75,9 +76,9 @@ def hmano( jugador ):
 
 def guardar_marcador( ganador ):
     if ganador in j.marcador:
-        marcador[ganador] = 1  #quiza estoy mal pero creo que aqui es al revés... marcador[ganador] += 1
+        j.marcador[ganador] += 1
     else:
-        marcador[ganador] += 1 #y aqui... marcador[ganador] = 1
+        j.marcador[ganador] = 1
 
 def mostrar_jugadores():
     return j.get_jugadores()
@@ -93,6 +94,9 @@ def mostrar_mano():
 def mostrar_marcador():
     return j.marcador
 
+#def reset_marcador():
+#    j.marcador.clear()
+
 def main( direccion, puerto, manox ):
 
     j.numero_cartas = j.max_cap( manox, "" )
@@ -102,6 +106,9 @@ def main( direccion, puerto, manox ):
     server.register_function(mostrar_mano)
     server.register_function(mostrar_manos)
     server.register_function(mostrar_marcador)
+    server.register_function(guardar_marcador)
+    #server.register_function(reset_marcador)
+
     # Start the server
     try:
         print('Usa Control-C para salir')

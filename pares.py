@@ -34,7 +34,15 @@ def mostrar_mano( jugador, mano ):
     print(jugador)
     print("-------------")
     for carta in mano:
-        print(carta)
+        valor= carta.get('valor')
+        figura=carta.get('figura')
+        if(valor>10):
+          if(valor==11): valor = "Paje"
+          elif(valor==12): valor = "Reina"
+          elif(valor==13): valor = "Rey"
+          elif(valor==20): valor = "As"
+        print(valor ," de ", figura)
+    print('\n')
 
 def comparar_manos( jugadores ):
   ganador = None          #Ganador se asigna aquí
@@ -47,13 +55,11 @@ def comparar_manos( jugadores ):
   ctg = 0                 #Almacena la cantidad de tercias máxima
   empate = False          #Boolean de si hay empate
   max_puntaje = 0         #Máximo puntaje alcanzado
-  for jugador, mano in jugadores:     #El proceso se hace por cada jugador
-    mostrar_mano(jugador, mano)
-    #Mostramos sus cartas
+  for jugador, mano in jugadores.items():     #El proceso se hace por cada jugador
     suma_cartas = 0
     dict_mano = dict()
     for carta in mano:  #En un diccionario vamos poniendo cuántas de cada valor hay
-      valor_carta = carta.valor
+      valor_carta = carta.get('valor')
       if valor_carta in dict_mano:
         dict_mano[valor_carta] += 1
       else:
@@ -82,6 +88,7 @@ def comparar_manos( jugadores ):
         suma_puntaje += valor*4                 #Obtenemos su puntaje
         if llave > par_alto:                    #Si su llave es el par más alto...
           par_alto = llave                      #Guárdalo
+    mostrar_mano(jugador, mano)
     print("Puntaje: {} \n".format(suma_puntaje))
     if suma_cartas == mano_ganadora:            #Si la suma de cartas es igual a la mano ganadora...
       lista_empate.append( [jugador, par_alto, tercia_alta, dict_mano] )    #Vamos a compararlas, guardala en la lista

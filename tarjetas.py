@@ -39,7 +39,7 @@ class Carta:
         self.valor = valor
         if( self.valor == 1 ):
             self.valor = 20
-    
+
     def __str__( self ):
         #Muestra la carta individual, asigna String a numericos específicos, (1=as, 12=reina, etc.)
         if ( self.valor > 11):
@@ -79,7 +79,7 @@ class Baraja:
     def genera_deck( self ):
         # Crea una baraja utilizando un loop, ademas revuelve las cartas de la baraja
         for cara in self.lista_figuras:
-            for valor in range( 1, 14 ): 
+            for valor in range( 1, 14 ):
                 self.lista_cartas.append( Carta( cara, valor ) )
         self.revolver()
 
