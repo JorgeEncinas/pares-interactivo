@@ -27,10 +27,9 @@ def menu():
     print("3. Mostrar manos de todos")  #El servidor devuelve un diccionario con los jugadores y sus manos. El cliente muestra cada uno como el 1 los imprime. Devolver el ganador para que el servidor guarde en su diccionario cuántos juegos ha ganado cada jugador. Sólo cuentan los pares y los tríos de cartas
     print("4. Volver a Jugar")          #Se conecta al servidor y se reinicia la baraja. Se limpian las manos
     print("5. Mostrar Marcador")        #El cliente pide al servidor el diccionario de marcador. Al recibirlo, lo muestra, así como la cantidad de juegos jugados.
-    print("6. Cambiar Nombre")          #El cliente se desconecta del servidor y sale.
-    print("0. Salir")                   #A ver si ahora sí me sale ajuuuuuuuuua
+    print("0. Salir")                   #El cliente se desconecta del servidor y sale.
     print("")
-    return safe_int("Escriba el número de la opción que desee y presione Enter \n", 6)
+    return safe_int("Escriba el número de la opción que desee y presione Enter \n", 5)
 
 
 def safe_int( mensaje, opcion_max ):
@@ -45,15 +44,18 @@ def safe_int( mensaje, opcion_max ):
         return respuesta
 
 def mostrar_jugadores( proxy ):
+    print("")
     players = proxy.mostrar_jugadores()
     if len(players) > 0:
         print("Jugadores: {}".format(len(players)))
         for i, player in enumerate(players):
-            print("Jugador {}: {}".format(i, player))
+            print("Jugador {}: {}".format(i+1, player))
     else:
         print("No hay jugadores aún.")
+    print("")
 
-def mostrar_manos( proxy):
+def mostrar_manos( proxy ):
+    print("")
     jugadores=proxy.mostrar_manos()
     ganador, dict_ganador = pares.comparar_manos( jugadores )
     if ganador is None:
@@ -62,12 +64,12 @@ def mostrar_manos( proxy):
         print("El ganador es {}!".format(ganador))
         print(pares.motivoVictoria(dict_ganador))
     proxy.guardar_marcador( ganador )
+    print("")
 
-def reset():
-    print("PICHIUUUUUUUUUUUUUUUUU PWAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+def reset( proxy ):
+    proxy.sreset()
 
 def main( jugador, direccion, puerto ):
-    #jugador="nene"
     print("Iniciamos! \n")
     proxy = xmlrpc.client.ServerProxy('http://localhost:9000', allow_none=True)
     try:
@@ -77,6 +79,7 @@ def main( jugador, direccion, puerto ):
             if opcion == 0: #Salir
                 break
             if opcion == 1: #Pedir Mano
+                print("")
                 mi_mano = proxy.hmano( jugador )
                 pares.mostrar_mano(jugador, mi_mano)
             if opcion == 2: #Mostrar Jugadores
@@ -84,17 +87,18 @@ def main( jugador, direccion, puerto ):
             if opcion == 3: #Mostrar manos de todos
                 mostrar_manos(proxy)
             if opcion == 4: #Volver a jugar
-                #proxy.reset_marcador()
-                reset()
+                reset( proxy )
+                print("Se han revuelto las cartas.")
             if opcion == 5: #Mostrar Marcador
+                print("")
                 marcador=proxy.mostrar_marcador()
                 items=marcador.items()
                 print("HIGH-SCORE")
                 print("------------------")
-                for jugador in items:
-                    print(jugador[0],": ",jugador[1],"pts")
-            if opcion == 6: #Cambiar Nombre #SiSePuedeMéxico
-                print("No está listo bro")
+                if len(jugador) > 0:    
+                    for jugador in items:
+                        print(jugador[0],": ",jugador[1],"pts")
+                print("")
         print("Saliendo")
 
     except ConnectionError:

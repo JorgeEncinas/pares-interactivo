@@ -42,7 +42,7 @@ def mostrar_mano( jugador, mano ):
           elif(valor==13): valor = "Rey"
           elif(valor==20): valor = "As"
         print(valor ," de ", figura)
-    print('\n')
+    print("")
 
 def comparar_manos( jugadores ):
   ganador = None          #Ganador se asigna aquí

@@ -62,13 +62,18 @@ class Juego: #adaptar esto para que sea la baraja.
     def get_jugadores( self ):
         return [key for key in self.dict_jugadores.keys()] # Maybe .keys() not necessary
 
-# Set up logging
-logging.basicConfig(level=logging.DEBUG)
+    def recoge_manos( self ):
+        try:
+            for jugador, lista_mano in self.dict_jugadores.items():
+                self.dict_jugadores[jugador] = []
+        except:
+            print("Perdon bro no puedo quitar players")
+        try:
+            self.baraja.limpia_deck()
+            self.baraja.genera_deck()
+        except:
+            print("Bro no sé generar un deck nuevo")
 
-server = SimpleXMLRPCServer(
-("localhost", 9000),
-logRequests=True, allow_none=True,
-)
 j = Juego()
 
 def hmano( jugador ):
@@ -94,10 +99,18 @@ def mostrar_mano():
 def mostrar_marcador():
     return j.marcador
 
-#def reset_marcador():
-#    j.marcador.clear()
+def sreset():
+    j.recoge_manos()
 
 def main( direccion, puerto, manox ):
+    # Set up logging
+    logging.basicConfig(level=logging.DEBUG)
+
+    server = SimpleXMLRPCServer(
+    (direccion, puerto),
+    logRequests=True, allow_none=True,
+    )
+    
 
     j.numero_cartas = j.max_cap( manox, "" )
 
@@ -107,6 +120,7 @@ def main( direccion, puerto, manox ):
     server.register_function(mostrar_manos)
     server.register_function(mostrar_marcador)
     server.register_function(guardar_marcador)
+    server.register_function(sreset)
     #server.register_function(reset_marcador)
 
     # Start the server

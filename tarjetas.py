@@ -92,11 +92,17 @@ class Baraja:
 
     def genera_mano( self, numero ):
         # Genera una lista de cartas dependiendo del numero indicado
-        mano = []   
+        mano = [] 
+        x = 1
         for i in range( 1, numero+1 ):
-            mano.append( self.lista_cartas.pop() )
+            if len(self.lista_cartas) > 0:
+                mano.append( self.lista_cartas.pop() )
         mano.sort(key = lambda carta: carta.valor)
         return mano
+    
+    def limpia_deck( self ):
+        self.lista_cartas.clear()
+
 
 class Jugador:
     nombre = None #str
