@@ -91,6 +91,7 @@ def main( jugador, direccion, puerto ):
                 reset( proxy )
                 print("Se han revuelto las cartas.")
             if opcion == 5: #Mostrar Marcador
+                print("")
                 marcador=proxy.mostrar_marcador()
                 items=marcador.items()
                 print("HIGH-SCORE")
