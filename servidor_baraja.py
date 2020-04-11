@@ -80,10 +80,10 @@ def hmano( jugador ):
     return j.mano( jugador, j.numero_cartas )
 
 def guardar_marcador( ganador ):
-    if ganador in j.marcador:
-        j.marcador[ganador] += 1
+    if str(ganador) in j.marcador:
+        j.marcador[str(ganador)] += 1
     else:
-        j.marcador[ganador] = 1
+        j.marcador[str(ganador)] = 1
 
 def mostrar_jugadores():
     return j.get_jugadores()

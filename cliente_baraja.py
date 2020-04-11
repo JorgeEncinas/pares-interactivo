@@ -63,7 +63,8 @@ def mostrar_manos( proxy ):
     else:
         print("El ganador es {}!".format(ganador))
         print(pares.motivoVictoria(dict_ganador))
-    proxy.guardar_marcador( ganador )
+    if ganador is not None:
+        proxy.guardar_marcador( ganador )
     print("")
 
 def reset( proxy ):
@@ -90,7 +91,6 @@ def main( jugador, direccion, puerto ):
                 reset( proxy )
                 print("Se han revuelto las cartas.")
             if opcion == 5: #Mostrar Marcador
-                print("")
                 marcador=proxy.mostrar_marcador()
                 items=marcador.items()
                 print("HIGH-SCORE")
