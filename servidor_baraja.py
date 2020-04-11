@@ -63,12 +63,7 @@ class Juego: #adaptar esto para que sea la baraja.
         return [key for key in self.dict_jugadores.keys()] # Maybe .keys() not necessary
 
 # Set up logging
-logging.basicConfig(level=logging.DEBUG)
 
-server = SimpleXMLRPCServer(
-("localhost", 9000),
-logRequests=True, allow_none=True,
-)
 j = Juego()
 
 def hmano( jugador ):
@@ -98,7 +93,12 @@ def mostrar_marcador():
 #    j.marcador.clear()
 
 def main( direccion, puerto, manox ):
+    logging.basicConfig(level=logging.DEBUG)
 
+    server = SimpleXMLRPCServer(
+    (direccion,puerto),
+    logRequests=True, allow_none=True,
+    )
     j.numero_cartas = j.max_cap( manox, "" )
 
     server.register_function(hmano)
