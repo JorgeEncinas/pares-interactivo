@@ -16,5 +16,3 @@
 
 ![cr8](/criterios/cr-9.PNG)
 
-![SIUUU](/criterios/cr7.jpg)
-
